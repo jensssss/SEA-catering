@@ -27,7 +27,7 @@ const Hero = () => {
         </p>
         <div className="mt-8">
           <a
-            href="#features"
+            href="/menu"
             className="bg-teal-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-teal-600 transition-all duration-300 transform hover:scale-105"
           >
             Explore Our Plans

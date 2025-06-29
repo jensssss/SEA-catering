@@ -32,9 +32,11 @@ const MealPlanModal = ({ plan, onClose }: ModalProps) => {
         onClick={handleContentClick}
         className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto relative"
       >
+        {/* --- MODIFICATION: Added z-index & styling to the existing button --- */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-500 hover:text-slate-800"
+          className="absolute top-3 right-3 z-10 p-1 rounded-full text-white bg-black/30 hover:bg-black/50 transition-colors"
+          aria-label="Close modal"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -61,7 +63,6 @@ const MealPlanModal = ({ plan, onClose }: ModalProps) => {
             </ul>
           </div>
           
-          {/* --- UPDATED BUTTON --- */}
           <Link href={`/subscribe?plan=${plan.id}`} className="block w-full mt-6">
             <button className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-teal-700 transition-all">
               Subscribe to this Plan

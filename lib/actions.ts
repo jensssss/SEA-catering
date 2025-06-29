@@ -18,6 +18,7 @@ export async function signup(formData: FormData) {
     password,
     options: {
       data: {
+        emailRedirectTo: 'http://localhost:3000/auth/callback',
         full_name: fullName, // This will be deprecated, but good for now
       },
     },

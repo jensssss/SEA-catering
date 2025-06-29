@@ -58,7 +58,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Failed to create user profile.' }, { status: 500 });
     }
 
-    return NextResponse.json({ message: 'User created successfully!' }, { status: 201 });
+    // ✅ Redirect user to account activation page after successful signup
+    return NextResponse.redirect(new URL('/accountActivation', request.url));
+
+    // return NextResponse.json({ message: 'User created successfully!' }, { status: 201 });
 
   } catch (err: any) {
     console.error('Server error:', err);

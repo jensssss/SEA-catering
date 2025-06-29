@@ -17,9 +17,26 @@ const SignupPage = () => {
         setError('');
         setMessage('');
 
+        // ✅ Full Name Validation
+        const isValidName = /^[a-zA-Z\s.'-]+$/.test(fullName);
+        if (!isValidName) {
+            setError('Full name contains invalid characters.');
+            setIsLoading(false);
+            return;
+        }
+
+        // ✅ Email Validation
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!isValidEmail) {
+            setError('Invalid email address format.');
+            setIsLoading(false);
+            return;
+        }
+
+        // ✅ Password Strength Validation
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(password)) {
-            setError('Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.');
+            setError('Password must be at least 8 characters and include uppercase, lowercase, number, and special char.');
             setIsLoading(false);
             return;
         }
@@ -31,21 +48,42 @@ const SignupPage = () => {
                 body: JSON.stringify({ fullName, email, password }),
             });
 
-            const result = await response.json();
+            if (response.status === 409) {
+                setError('Email already exists.');
+                return;
+            }
+
+            if (response.status === 201) {
+                setMessage('Sign up successful! Please check your email to activate your account.');
+                setFullName('');
+                setEmail('');
+                setPassword('');
+
+                setTimeout(() => {
+                    window.location.href = '/accountActivation';
+                }, 1500);
+                return;
+            }
+
+            let result = {};
+            if (response.headers.get('content-type')?.includes('application/json')) {
+            result = await response.json();
+            }
 
             if (!response.ok) {
                 throw new Error(result.message || 'An error occurred during sign up.');
             }
 
-            setMessage('Sign up successful! Redirecting...');
+            setMessage('Sign up successful! Please check your email to activate your account.');
             setFullName('');
             setEmail('');
             setPassword('');
 
             // Auto-redirect after delay
             setTimeout(() => {
-                window.location.href = '/dashboard';
+            window.location.href = '/accountActivation';
             }, 1500);
+
 
         } catch (err: any) {
             setError(err.message);

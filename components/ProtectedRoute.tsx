@@ -1,37 +1,48 @@
 'use client';
 
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-// This is a client-side component that wraps protected pages
+const routeRoles = {
+  '/dashboard': ['user'],
+  '/subscribe': ['user'],
+  '/admin': ['admin'],
+};
+
+function getAllowedRoles(pathname: string): string[] {
+  if (pathname.startsWith('/admin')) return routeRoles['/admin'];
+  if (pathname.startsWith('/dashboard')) return routeRoles['/dashboard'];
+  if (pathname.startsWith('/subscribe')) return routeRoles['/subscribe'];
+  return []; // public
+}
+
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    // If the auth state is not loading and there's no user, redirect to login
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
+    if (!loading) {
+      const allowedRoles = getAllowedRoles(pathname);
 
-  // If loading, show a spinner or a blank page
-  if (loading) {
+      if (!user) {
+        router.push('/login');
+      } else if (allowedRoles.length > 0 && !allowedRoles.includes(profile?.role || '')) {
+        router.push('/unauthorized');
+      }
+    }
+  }, [user, profile, loading, pathname, router]);
+
+  if (loading || !user || !profile) {
     return (
-        <div className="flex justify-center items-center min-h-screen">
-            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-teal-500"></div>
-        </div>
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="text-slate-600 text-lg">Loading...</div>
+      </div>
     );
   }
 
-  // If there is a user, render the child components (the actual page)
-  if (user) {
-    return <>{children}</>;
-  }
-
-  // This will be shown briefly before the redirect happens
-  return null;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
