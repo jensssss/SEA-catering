@@ -4,10 +4,9 @@
 
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient'; // Make sure you have this client
+import { supabase } from '@/lib/supabaseClient';
 import { CheckCheck, Mail } from 'lucide-react';
 
-// A wrapper component is needed because useSearchParams must be used inside a <Suspense> boundary
 const AccountActivationContent = () => {
     const searchParams = useSearchParams();
     const email = searchParams.get('email');
@@ -70,7 +69,6 @@ const AccountActivationContent = () => {
     );
 }
 
-// Main page component that wraps the content in Suspense
 export default function AccountActivationPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">

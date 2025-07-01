@@ -47,7 +47,6 @@ const SignupPage = () => {
         }
 
         try {
-            // Note: This assumes you have a backend API route at '/api/auth/signup'
             const response = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -56,7 +55,7 @@ const SignupPage = () => {
 
             if (response.status === 409) {
                 setError('Email already exists.');
-                setIsLoading(false); // Stop loading on known error
+                setIsLoading(false);
                 return;
             }
             
@@ -74,14 +73,12 @@ const SignupPage = () => {
             
             // Redirect after a short delay
             setTimeout(() => {
-                // ✅ CORRECT: Redirect with the email as a URL parameter
                 window.location.href = `/accountActivation?email=${encodeURIComponent(email)}`;
             }, 1500);
 
         } catch (err: any) {
             setError(err.message);
         } finally {
-            // Only set loading to false here if no redirect is happening
             if (!message) {
                 setIsLoading(false);
             }
