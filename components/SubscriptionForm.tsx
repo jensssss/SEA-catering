@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation'; // ⬅️ Import dulu
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 const PLANS = [
@@ -109,7 +109,6 @@ export default function SubscriptionForm() {
     };
 
     try {
-      console.log('⏳ Sending request...');
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: {
@@ -119,7 +118,6 @@ export default function SubscriptionForm() {
         credentials: 'include',
         body: JSON.stringify(submissionData),
       });
-      console.log('✅ Got response');
       const text = await response.text();
       try {
         const result = JSON.parse(text);
@@ -139,11 +137,9 @@ export default function SubscriptionForm() {
           router.push('/dashboard');
         }, 1000);
       } catch (err) {
-        console.error('❌ Invalid JSON from server:', text);
         setSubmitMessage('Server returned invalid response or error.');
       }
     } catch (error: any) {
-      console.error('❌ Submission error:', error);
       setSubmitMessage(error.message || 'Failed to submit subscription. Please try again.');
     } finally {
       setIsSubmitting(false);

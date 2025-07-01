@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase client setup - UNTOUCHED
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-// Reusable StarRating component - UNTOUCHED
+
 const StarRatingInput = ({ rating, setRating }: { rating: number, setRating: (rating: number) => void }) => (
   <div className="flex space-x-1">
     {[1, 2, 3, 4, 5].map((star) => (
@@ -27,7 +27,7 @@ const StarRatingInput = ({ rating, setRating }: { rating: number, setRating: (ra
 );
 
 const Testimonials = () => {
-  // All state and backend logic is UNTOUCHED
+  
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -138,12 +138,12 @@ const Testimonials = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">Your Name</label>
-                {/* MODIFICATION: Restored placeholder and styling */}
+                
                 <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Jenson" className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-slate-700"/>
               </div>
               <div>
                 <label htmlFor="review" className="block text-sm font-medium text-slate-700 mb-1">Review Message</label>
-                {/* MODIFICATION: Restored placeholder and styling */}
+                
                 <textarea id="review" rows={4} required value={review} onChange={(e) => setReview(e.target.value)} placeholder="The meals were amazing..." className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-slate-700"/>
               </div>
               <div>
@@ -152,7 +152,7 @@ const Testimonials = () => {
               </div>
               {success && <p className="text-green-500 bg-green-50 p-3 rounded-lg">{success}</p>}
               {error && <p className="text-red-500 bg-red-50 p-3 rounded-lg">{error}</p>}
-              {/* MODIFICATION: Restored button styling */}
+              
               <button type="submit" className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-teal-700 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                 Submit Review
               </button>

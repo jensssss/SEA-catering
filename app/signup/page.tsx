@@ -43,46 +43,34 @@ const SignupPage = () => {
 
         try {
             const response = await fetch('/api/auth/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fullName, email, password }),
-            });
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fullName, email, password }),
+        });
 
-            if (response.status === 409) {
-                setError('Email already exists.');
-                return;
-            }
+        if (response.status === 409) {
+            setError('Email already exists.');
+            return;
+        }
 
-            if (response.status === 201) {
-                setMessage('Sign up successful! Please check your email to activate your account.');
-                setFullName('');
-                setEmail('');
-                setPassword('');
+        const contentType = response.headers.get('content-type');
+        const result = contentType?.includes('application/json')
+            ? await response.json()
+            : {};
 
-                setTimeout(() => {
-                    window.location.href = '/accountActivation';
-                }, 1500);
-                return;
-            }
+        if (!response.ok) {
+            throw new Error(result.message || 'An error occurred during sign up.');
+        }
 
-            let result = {};
-            if (response.headers.get('content-type')?.includes('application/json')) {
-            result = await response.json();
-            }
+        // Success handler
+        setMessage('Sign up successful! Please check your email to activate your account.');
+        setFullName('');
+        setEmail('');
+        setPassword('');
 
-            if (!response.ok) {
-                throw new Error(result.message || 'An error occurred during sign up.');
-            }
-
-            setMessage('Sign up successful! Please check your email to activate your account.');
-            setFullName('');
-            setEmail('');
-            setPassword('');
-
-            // Auto-redirect after delay
-            setTimeout(() => {
+        setTimeout(() => {
             window.location.href = '/accountActivation';
-            }, 1500);
+        }, 1500);
 
 
         } catch (err: any) {

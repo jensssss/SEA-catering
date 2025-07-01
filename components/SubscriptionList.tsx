@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/lib/supabaseClient';
 
-// Simple Modal component (unchanged)
+
 const Modal = ({ isOpen, onClose, children }: { isOpen: boolean; onClose: () => void; children: React.ReactNode }) => {
   if (!isOpen) return null;
   return (
@@ -87,7 +87,6 @@ const SubscriptionList = () => {
     });
 
     if (res.ok) {
-      // **MODIFICATION: Update state locally instead of reloading**
       setSubscriptions(prevSubs =>
         prevSubs.map(sub =>
           sub.id === id ? { ...sub, status: 'paused', pause_end: range.end } : sub
@@ -111,7 +110,6 @@ const SubscriptionList = () => {
     });
 
     if (res.ok) {
-      // **MODIFICATION: Update state locally instead of reloading**
       setSubscriptions(prevSubs =>
         prevSubs.map(sub => (sub.id === id ? { ...sub, status: 'cancelled' } : sub))
       );
