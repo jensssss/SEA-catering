@@ -119,11 +119,15 @@ export default function SubscriptionForm() {
     };
 
     try {
+      const csrfRes = await fetch('/api/csrf');
+      const csrfData = await csrfRes.json();
+      const csrfToken = csrfData.csrfToken;
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${jwt}`,
+          'X-CSRF-Token': csrfToken,
         },
         credentials: 'include',
         body: JSON.stringify(submissionData),
