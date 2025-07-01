@@ -1,18 +1,17 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-// This function handles POST requests to /api/auth/logout
 export async function POST() {
   try {
-    // Supabase's session cookie is managed by Next.js.
-    // To log out, we simply clear all cookies related to the session.
-    // Supabase names them 'sb-...' or 'supabase-...'
-    const cookieStore = cookies();
-    const cookieKeys = cookieStore.getAll().map(cookie => cookie.name);
-
-    cookieKeys.forEach(key => {
-      if (key.startsWith('sb-') || key.startsWith('supabase-')) {
-        cookieStore.delete(key);
+    const cookieStore = cookies(); 
+    const allCookies = cookieStore.getAll();
+    
+    allCookies.forEach((cookie) => {
+      if (cookie.name.startsWith('sb-') || cookie.name.startsWith('supabase-')) {
+        cookieStore.set(cookie.name, '', {
+          path: '/',
+          maxAge: 0,
+        });
       }
     });
 
@@ -20,6 +19,9 @@ export async function POST() {
 
   } catch (error) {
     console.error('Logout error:', error);
-    return NextResponse.json({ message: 'An unexpected error occurred during logout.' }, { status: 500 });
+    return NextResponse.json(
+      { message: 'An unexpected error occurred during logout.' },
+      { status: 500 }
+    );
   }
 }
