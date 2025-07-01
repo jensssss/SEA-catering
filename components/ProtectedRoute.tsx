@@ -4,17 +4,20 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect } from 'react';
 
-const routeRoles = {
+// Define prefix-based role access rules
+const ROUTE_PREFIX_ROLES: Record<string, string[]> = {
+  '/admin': ['admin'],
   '/dashboard': ['user', 'admin'],
   '/subscribe': ['user', 'admin'],
-  '/admin': ['admin'],
 };
 
 function getAllowedRoles(pathname: string): string[] {
-  if (pathname.startsWith('/admin')) return routeRoles['/admin'];
-  if (pathname.startsWith('/dashboard')) return routeRoles['/dashboard'];
-  if (pathname.startsWith('/subscribe')) return routeRoles['/subscribe'];
-  return []; // public routes
+  for (const prefix in ROUTE_PREFIX_ROLES) {
+    if (pathname.startsWith(prefix)) {
+      return ROUTE_PREFIX_ROLES[prefix];
+    }
+  }
+  return []; // Public route
 }
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -27,9 +30,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       const allowedRoles = getAllowedRoles(pathname);
       const userRole = profile?.role;
 
+      // Not logged in? Send to login page
       if (!user) {
         router.push('/login');
-      } else if (allowedRoles.length > 0 && !allowedRoles.includes(userRole || '')) {
+        return;
+      }
+
+      // Logged in but role not allowed? Send to 403
+      if (allowedRoles.length > 0 && !allowedRoles.includes(userRole || '')) {
         router.push('/unauthorized');
       }
     }
