@@ -16,6 +16,14 @@ const DELIVERY_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const
 type Plan = typeof PLANS[number];
 type MealType = typeof MEAL_TYPES[number];
 type DeliveryDay = typeof DELIVERY_DAYS[number];
+type InputFieldProps = {
+  id: string;
+  label: string;
+  type?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+};
 
 const CheckIcon = () => (
   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -30,7 +38,8 @@ const FormSectionHeader = ({ title, subtitle }: { title: string, subtitle: strin
   </div>
 );
 
-const InputField = ({ id, label, type = 'text', value, onChange, required = false }) => (
+
+const InputField: React.FC<InputFieldProps> = ({ id, label, type = 'text', value, onChange, required = false }) => (
   <div>
     <label htmlFor={id} className="block text-sm font-medium text-slate-700 mb-1">
       {label} {required && <span className="text-red-500">*</span>}
