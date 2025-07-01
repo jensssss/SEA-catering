@@ -4,19 +4,17 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect } from 'react';
 
-// Define route role access
-const routeRoles: { [key: string]: string[] } = {
-  '/dashboard': ['user'],
-  '/subscribe': ['user'],
+const routeRoles = {
+  '/dashboard': ['user', 'admin'],
+  '/subscribe': ['user', 'admin'],
   '/admin': ['admin'],
 };
 
-// Determine role access based on route
 function getAllowedRoles(pathname: string): string[] {
   if (pathname.startsWith('/admin')) return routeRoles['/admin'];
   if (pathname.startsWith('/dashboard')) return routeRoles['/dashboard'];
   if (pathname.startsWith('/subscribe')) return routeRoles['/subscribe'];
-  return []; // public routes like /, /menu, /login, etc.
+  return []; // public routes
 }
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -27,17 +25,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!loading) {
       const allowedRoles = getAllowedRoles(pathname);
+      const userRole = profile?.role;
 
-      // User not logged in
       if (!user) {
-        router.replace('/login');
-        return;
-      }
-
-      // Logged in but role not authorized
-      if (allowedRoles.length > 0 && !allowedRoles.includes(profile?.role || '')) {
-        router.replace('/unauthorized');
-        return;
+        router.push('/login');
+      } else if (allowedRoles.length > 0 && !allowedRoles.includes(userRole || '')) {
+        router.push('/unauthorized');
       }
     }
   }, [user, profile, loading, pathname, router]);
@@ -45,7 +38,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   if (loading || !user || !profile) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
-        <div className="text-slate-500 text-lg">Authenticating...</div>
+        <div className="text-slate-600 text-lg">Loading...</div>
       </div>
     );
   }
