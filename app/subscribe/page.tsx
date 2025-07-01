@@ -1,3 +1,5 @@
+// subscribe/page.tsx
+
 'use client'; 
 
 import SubscriptionForm from '@/components/SubscriptionForm';

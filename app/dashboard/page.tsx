@@ -1,6 +1,7 @@
+// dashboard/page.tsx
+
 import ProtectedRoute from '@/components/ProtectedRoute';
 import SubscriptionList from '@/components/SubscriptionList';
-import { useAuth } from '@/context/AuthContext';
 
 
 const DashboardPage = () => {

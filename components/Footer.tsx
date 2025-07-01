@@ -1,4 +1,4 @@
-// C:\Users\Jenson\Tech\Compfest\v2\sea-catering\components\Footer.tsx
+// components/Footer.tsx
 import React from 'react';
 import Link from 'next/link';
 

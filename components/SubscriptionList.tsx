@@ -1,3 +1,4 @@
+// components/SubscriptionList.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -45,7 +46,7 @@ const SubscriptionList = () => {
       if (!user) return;
       try {
         setLoading(true);
-        setError(''); // Reset error on fetch
+        setError('');
         const { data, error: fetchError } = await supabase
           .from('subscriptions')
           .select('*, profiles:profiles(full_name)')
@@ -130,7 +131,6 @@ const SubscriptionList = () => {
     );
   }
 
-  // Display a single, dismissible error message at the top
   return (
     <div>
       {error && (
@@ -155,7 +155,6 @@ const SubscriptionList = () => {
           {subscriptions.map((sub) => (
             <div key={sub.id} className="bg-white p-6 rounded-xl shadow-lg transition-shadow hover:shadow-xl">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start">
-                {/* --- MODIFICATION START: Improved Information Hierarchy --- */}
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-slate-800">{sub.plan}</h3>
                   <div className="text-sm text-slate-500 mt-1 mb-3">
@@ -182,7 +181,6 @@ const SubscriptionList = () => {
                     )}
                   </div>
                 </div>
-                {/* --- MODIFICATION END --- */}
 
                 <div className="mt-6 md:mt-0 md:ml-10 w-full md:w-auto text-right">
                   <p className="text-sm text-slate-600">Monthly Price</p>
@@ -192,7 +190,6 @@ const SubscriptionList = () => {
                 </div>
               </div>
               
-              {/* --- MODIFICATION START: Context-aware and safer action buttons --- */}
               <div className="mt-6 flex justify-end items-center gap-3 border-t pt-4">
                 {sub.status === 'cancelled' ? (
                   <p className="text-sm font-medium text-red-600">This subscription has been cancelled.</p>
@@ -215,9 +212,7 @@ const SubscriptionList = () => {
                   </>
                 )}
               </div>
-              {/* --- MODIFICATION END --- */}
 
-              {/* --- Modals are unchanged in structure but now driven by new state logic --- */}
               <Modal isOpen={showPauseModal === sub.id} onClose={() => setShowPauseModal(null)}>
                 <h4 className="text-lg font-semibold mb-4">Pause Subscription</h4>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Pause From</label>

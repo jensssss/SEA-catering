@@ -1,3 +1,5 @@
+// /api/admin/dashboard/page.tsx
+
 import { supabase } from '@/lib/supabaseClient';
 import { NextResponse } from 'next/server';
 

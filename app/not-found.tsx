@@ -1,4 +1,6 @@
-import { HiOutlineMap, HiOutlineArrowLeft } from 'react-icons/hi2';
+// /not-found.tsx
+
+import { HiOutlineMap } from 'react-icons/hi2';
 
 export default function NotFoundPage() {
   return (

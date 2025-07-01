@@ -1,8 +1,7 @@
-// C:\Users\Jenson\Tech\Compfest\v2\sea-catering\components\Features.tsx
+// components/Features.tsx
 
 import React from 'react';
 
-// Simple SVG icons for a modern feel
 const FeatureIcon = ({ d }: { d: string }) => (
   <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-teal-50 to-cyan-100">
     <svg className="h-10 w-10 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

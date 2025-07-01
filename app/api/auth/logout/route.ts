@@ -1,3 +1,5 @@
+// /api/auth/logout/route.ts
+
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 

@@ -1,3 +1,5 @@
+// login/page.tsx
+
 'use client';
 
 import React, { useState } from 'react';
@@ -18,22 +20,14 @@ const LoginPage = () => {
         setError('');
 
         try {
-            // --- THIS IS THE FIX ---
-            // We call Supabase auth directly from the client.
-            // This is secure and handles the session state automatically.
             const { error: signInError } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
 
             if (signInError) {
-                // If Supabase returns an error, throw it to the catch block
                 throw signInError;
             }
-
-            // If login is successful, the onAuthStateChange listener in our
-            // AuthContext will automatically update the user state.
-            // Now a soft navigation with router.push will work perfectly.
             router.push('/');
 
         } catch (err: any) {
@@ -41,8 +35,6 @@ const LoginPage = () => {
             setError('Invalid email or password. Please try again.');
             setIsLoading(false); 
         }
-        // We don't need a `finally` block because we only stop loading on error.
-        // On success, we navigate away.
     };
 
     return (

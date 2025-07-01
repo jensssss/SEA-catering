@@ -1,23 +1,29 @@
+// components/ProtectedRoute.tsx
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useEffect } from 'react';
 
-// Define prefix-based role access rules
+// Route access control rules
 const ROUTE_PREFIX_ROLES: Record<string, string[]> = {
   '/admin': ['admin'],
   '/dashboard': ['user', 'admin'],
   '/subscribe': ['user', 'admin'],
 };
 
+function normalizePath(pathname: string): string {
+  return pathname.toLowerCase().replace(/\/+$/, '');
+}
+
+// Get allowed roles by matching path prefix
 function getAllowedRoles(pathname: string): string[] {
-  for (const prefix in ROUTE_PREFIX_ROLES) {
-    if (pathname.startsWith(prefix)) {
-      return ROUTE_PREFIX_ROLES[prefix];
-    }
-  }
-  return []; // Public route
+  const cleanedPath = normalizePath(pathname);
+  const matchedPrefix = Object.keys(ROUTE_PREFIX_ROLES).find(
+    (prefix) =>
+      cleanedPath === prefix || cleanedPath.startsWith(prefix + '/')
+  );
+  return matchedPrefix ? ROUTE_PREFIX_ROLES[matchedPrefix] : [];
 }
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -26,20 +32,24 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading) {
-      const allowedRoles = getAllowedRoles(pathname);
-      const userRole = profile?.role;
+    const allowedRoles = getAllowedRoles(pathname);
+    const userRole = profile?.role ?? 'unknown';
 
-      // Not logged in? Send to login page
-      if (!user) {
-        router.push('/login');
-        return;
-      }
+    console.log('%c[Auth Debug]', 'color: cyan');
+    console.log('Pathname:', pathname);
+    console.log('Allowed roles:', allowedRoles);
+    console.log('User role:', userRole);
+    console.log('User:', user);
+    console.log('Loading:', loading);
 
-      // Logged in but role not allowed? Send to 403
-      if (allowedRoles.length > 0 && !allowedRoles.includes(userRole || '')) {
-        router.push('/unauthorized');
-      }
+    if (loading) return;
+
+    if (!user) {
+      console.warn('[ProtectedRoute] User not logged in. Redirecting to /login...');
+      router.push('/login');
+    } else if (allowedRoles.length > 0 && !allowedRoles.includes(userRole)) {
+      console.warn('[ProtectedRoute] Access denied. Redirecting to /unauthorized...');
+      router.push('/unauthorized');
     }
   }, [user, profile, loading, pathname, router]);
 

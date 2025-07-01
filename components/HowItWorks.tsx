@@ -1,9 +1,8 @@
-// C:\Users\Jenson\Tech\Compfest\v2\sea-catering\components\HowItWorks.tsx
+// components/HowItWorks.tsx
 'use client';
 
 import React from 'react';
 
-// Reusable icon wrapper for consistent styling
 const StepIcon = ({ icon }: { icon: React.ReactNode }) => (
   <div className="flex items-center justify-center w-16 h-16 mb-6 bg-teal-500 text-white rounded-full shadow-lg">
     {icon}

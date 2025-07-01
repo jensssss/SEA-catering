@@ -1,31 +1,39 @@
 // app/admin/layout.tsx
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/types/supabase'; // Optional
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createServerComponentClient({ cookies });
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore });
 
-  // 🔁 Tunggu session, dan kalau gak ada, redirect login
-  if (!session?.user) {
-    return redirect('/unauthorized');
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log('ADMIN ROUTE: No user session found. Redirecting...');
+    redirect('/unauthorized');
   }
 
-  // ✅ Kalau ada session, cek role-nya
+
   const { data: profile, error } = await supabase
     .from('profiles')
     .select('role')
-    .eq('id', session.user.id)
+    .eq('id', user.id)
     .single();
 
-  // 🛑 Kalau role bukan admin → redirect ke unauthorized
-  if (profile?.role !== 'admin') {
-    return redirect('/unauthorized');
+  if (error || !profile || profile.role !== 'admin') {
+    console.log(`ADMIN ROUTE: Access DENIED for user ${user.id}. Role: ${profile?.role}.`);
+    if (error) {
+      console.error("Error fetching profile:", error.message);
+    }
+    redirect('/unauthorized');
   }
 
-  // ✅ Aman, render children
+  console.log(`ADMIN ROUTE: Access GRANTED for admin user ${user.id}.`);
   return <>{children}</>;
 }

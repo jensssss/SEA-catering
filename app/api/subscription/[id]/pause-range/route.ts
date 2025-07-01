@@ -1,3 +1,5 @@
+// /api/subscription/[id]/pause-range/route.ts
+
 import { supabase } from '@/lib/supabaseClient';
 import { NextRequest } from 'next/server';
 

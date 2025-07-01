@@ -1,7 +1,7 @@
-// C:\Users\Jenson\Tech\Compfest\v2\sea-catering\components\Contact.tsx
+// components/Contact.tsx
 
 import React from 'react';
-import Image from 'next/image'; // Import the Next.js Image component
+import Image from 'next/image';
 
 const Contact = () => {
   const whatsappLink = `https://wa.me/628123456789`;
@@ -33,7 +33,6 @@ const Contact = () => {
               rel="noopener noreferrer"
               className="bg-white/90 backdrop-blur-sm rounded-lg p-5 w-full md:w-auto flex items-center justify-center md:justify-start space-x-4 text-slate-800 hover:bg-white transition-all transform hover:scale-105"
             >
-              {/* === Using the Next.js Image component with the local SVG === */}
               <Image
                 src="/whatsapp-icon.svg"
                 alt="Chat on WhatsApp"

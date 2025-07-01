@@ -1,3 +1,5 @@
+// signup/page.tsx
+
 'use client';
 
 import React, { useState } from 'react';
@@ -17,7 +19,7 @@ const SignupPage = () => {
         setError('');
         setMessage('');
 
-        // ✅ Full Name Validation
+        // Full Name Validation
         const isValidName = /^[a-zA-Z\s.'-]+$/.test(fullName);
         if (!isValidName) {
             setError('Full name contains invalid characters.');
@@ -25,7 +27,7 @@ const SignupPage = () => {
             return;
         }
 
-        // ✅ Email Validation
+        //  Email Validation
         const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         if (!isValidEmail) {
             setError('Invalid email address format.');
@@ -33,7 +35,7 @@ const SignupPage = () => {
             return;
         }
 
-        // ✅ Password Strength Validation
+        //  Password Strength Validation
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (!passwordRegex.test(password)) {
             setError('Password must be at least 8 characters and include uppercase, lowercase, number, and special char.');

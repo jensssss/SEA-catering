@@ -1,4 +1,5 @@
-// PATCH /api/subscription/[id]/status
+// /api/subscription/[id]/status/route.ts
+
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse, NextRequest } from 'next/server';
 

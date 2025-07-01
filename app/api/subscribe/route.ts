@@ -1,4 +1,5 @@
-// ✅ route.ts (pakai JWT)
+// /api/subscribe/route.ts
+
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 

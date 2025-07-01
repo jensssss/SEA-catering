@@ -1,9 +1,8 @@
-// C:\Users\Jenson\Tech\Compfest\v2\sea-catering\components\FAQ.tsx
+// components/FAQ.tsx
 'use client';
 
 import React, { useState } from 'react';
 
-// Individual FAQ item component with accordion logic
 const FaqItem = ({ question, answer }: { question: string, answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
 

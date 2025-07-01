@@ -1,3 +1,4 @@
+// components/MealPlanModal.tsx
 'use client';
 
 import React from 'react';

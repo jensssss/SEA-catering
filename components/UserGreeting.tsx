@@ -1,3 +1,4 @@
+// components/UserGreetings.tsx
 'use client';
 
 import { useAuth } from '@/context/AuthContext';

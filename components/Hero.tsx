@@ -1,9 +1,8 @@
-// C:\Users\Jenson\Tech\Compfest\v2\sea-catering\components\Hero.tsx
+// components/Hero.tsx
 
 import React from 'react';
 
 const Hero = () => {
-  // The path now points to our local file in the public folder
   const heroImageUrl = '/hero-background.jpg';
 
   return (
@@ -11,10 +10,8 @@ const Hero = () => {
       className="relative bg-cover bg-center text-white"
       style={{ backgroundImage: `url(${heroImageUrl})` }}
     >
-      {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/60"></div>
 
-      {/* Content Container */}
       <div className="relative z-10 container mx-auto px-6 py-32 text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
           SEA Catering

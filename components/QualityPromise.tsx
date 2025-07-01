@@ -1,6 +1,6 @@
+// components/QualityPromise.tsx
 import React from 'react';
 
-// A reusable sub-component for each feature item
 const FeatureItem = ({ icon, title, children }: { icon: React.ReactNode, title: string, children: React.ReactNode }) => (
   <div className="flex items-start">
     <div className="flex-shrink-0">

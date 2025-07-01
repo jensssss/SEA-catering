@@ -1,10 +1,10 @@
+// context/AuthContext.tsx
 'use client';
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { User } from '@supabase/supabase-js';
 
-// Define profile shape (must match your Supabase 'profiles' table)
 interface Profile {
   id: string;
   full_name: string;
@@ -30,7 +30,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const getSessionAndProfile = async () => {
+      console.log('[DEBUG] getSessionAndProfile triggered');
+      const raw = localStorage.getItem('supabase.auth.token');
+      console.log('[DEBUG] Raw session from localStorage:', raw);
+      
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('[DEBUG] Supabase session:', session);
       const currentUser = session?.user ?? null;
       setUser(currentUser);
 

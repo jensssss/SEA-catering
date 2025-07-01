@@ -1,4 +1,4 @@
-// C:\Users\Jenson\Tech\Compfest\v2\sea-catering\app\page.tsx
+// /page.tsx
 
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
