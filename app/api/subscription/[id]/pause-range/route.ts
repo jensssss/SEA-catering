@@ -1,7 +1,9 @@
+import { NextRequest } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   const { pauseStart, pauseEnd } = await req.json();
+
   const { data, error } = await supabase
     .from('subscriptions')
     .update({
