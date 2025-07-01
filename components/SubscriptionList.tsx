@@ -27,6 +27,7 @@ type Subscription = {
   status?: 'active' | 'paused' | 'cancelled';
   pause_end?: string;
   full_name?: string;
+  allergies?: string;
 };
 
 const SubscriptionList = () => {
