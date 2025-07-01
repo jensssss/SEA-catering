@@ -9,7 +9,7 @@ export default function AuthCallback() {
 
   useEffect(() => {
     const handleAuthRedirect = async () => {
-      const { error } = await supabase.auth.getSession(); // Forces session to be read + set
+      const { error } = await supabase.auth.getSession();
       if (error) {
         console.error('Auth callback error:', error.message);
       }
@@ -19,5 +19,5 @@ export default function AuthCallback() {
     handleAuthRedirect();
   }, [router]);
 
-  // return <p>Loading...</p>;
+  return <p>Loading...</p>;
 }
