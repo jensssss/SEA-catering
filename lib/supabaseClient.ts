@@ -1,14 +1,6 @@
-// lib/supabaseClient.ts
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+'use client';
 
-export const supabase = createBrowserSupabaseClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    },
-  }
-);
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/types/supabase';
+
+export const supabase = createBrowserSupabaseClient<Database>();
