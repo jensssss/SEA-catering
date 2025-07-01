@@ -28,7 +28,6 @@ const StarRatingInput = ({ rating, setRating }: { rating: number, setRating: (ra
 );
 
 const Testimonials = () => {
-  
   const [testimonials, setTestimonials] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -37,6 +36,9 @@ const Testimonials = () => {
   const [rating, setRating] = useState(0);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+
+  // Helper to strip HTML tags and prevent XSS
+  const sanitizeInput = (input: string) => input.replace(/<[^>]*>?/gm, '');
 
   const fetchTestimonials = async () => {
     const { data, error } = await supabase
@@ -68,6 +70,12 @@ const Testimonials = () => {
     e.preventDefault();
     setSuccess('');
     setError('');
+
+    // Ensure rating is provided
+    if (rating === 0) {
+      setError('Please provide a rating.');
+      return;
+    }
 
     const { error } = await supabase
       .from('testimonials')
@@ -107,6 +115,7 @@ const Testimonials = () => {
               ) : (
                 <>
                   <div>
+                    {/* React automatically escapes this content, preventing XSS */}
                     <p className="text-lg text-slate-600 italic">"{testimonials[currentIndex].review}"</p>
                   </div>
                   <div className="mt-6">
@@ -139,13 +148,11 @@ const Testimonials = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">Your Name</label>
-                
-                <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Jenson" className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-slate-700"/>
+                <input id="name" type="text" required value={name} onChange={(e) => setName(sanitizeInput(e.target.value))} placeholder="e.g., Jenson" className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-slate-700"/>
               </div>
               <div>
                 <label htmlFor="review" className="block text-sm font-medium text-slate-700 mb-1">Review Message</label>
-                
-                <textarea id="review" rows={4} required value={review} onChange={(e) => setReview(e.target.value)} placeholder="The meals were amazing..." className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-slate-700"/>
+                <textarea id="review" rows={4} required value={review} onChange={(e) => setReview(sanitizeInput(e.target.value))} placeholder="The meals were amazing..." className="mt-1 block w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500 text-slate-700"/>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Your Rating</label>
@@ -153,7 +160,7 @@ const Testimonials = () => {
               </div>
               {success && <p className="text-green-500 bg-green-50 p-3 rounded-lg">{success}</p>}
               {error && <p className="text-red-500 bg-red-50 p-3 rounded-lg">{error}</p>}
-              
+
               <button type="submit" className="w-full bg-teal-600 text-white font-semibold py-3 rounded-lg shadow-lg hover:bg-teal-700 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                 Submit Review
               </button>

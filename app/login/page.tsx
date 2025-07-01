@@ -12,7 +12,10 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const router = useRouter(); 
+    const router = useRouter();
+
+    // Helper to strip HTML tags and prevent XSS
+    const sanitizeInput = (input: string) => input.replace(/<[^>]*>?/gm, '');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -33,7 +36,7 @@ const LoginPage = () => {
         } catch (err: any) {
             console.error('Login error:', err.message);
             setError('Invalid email or password. Please try again.');
-            setIsLoading(false); 
+            setIsLoading(false);
         }
     };
 
@@ -54,7 +57,7 @@ const LoginPage = () => {
                             autoComplete="email"
                             required
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => setEmail(sanitizeInput(e.target.value))}
                             className="block w-full px-4 py-3 mt-1 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500  text-slate-700"
                         />
                     </div>
@@ -67,7 +70,7 @@ const LoginPage = () => {
                             autoComplete="current-password"
                             required
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)} // Passwords are not rendered, no XSS risk
                             className="block w-full px-4 py-3 mt-1 bg-slate-50 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500  text-slate-700"
                         />
                     </div>
