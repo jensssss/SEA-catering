@@ -3,16 +3,20 @@ import { cookies } from 'next/headers';
 
 export async function POST() {
   try {
-    const cookieStore = cookies(); 
-    const allCookies = cookieStore.getAll();
-    
-    allCookies.forEach((cookie) => {
-      if (cookie.name.startsWith('sb-') || cookie.name.startsWith('supabase-')) {
-        cookieStore.set(cookie.name, '', {
-          path: '/',
-          maxAge: 0,
-        });
-      }
+    const cookieStore = cookies();
+
+    // Iterate using `getAll()` is NOT available, so use known prefixes
+    const supabaseCookies = [
+      'sb-access-token',
+      'sb-refresh-token',
+      'supabase-auth-token',
+    ];
+
+    supabaseCookies.forEach((cookieName) => {
+      cookieStore.set(cookieName, '', {
+        path: '/',
+        maxAge: 0,
+      });
     });
 
     return NextResponse.json({ message: 'Logout successful' }, { status: 200 });
