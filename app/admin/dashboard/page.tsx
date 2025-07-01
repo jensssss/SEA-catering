@@ -64,14 +64,14 @@ const AdminDashboardPage = () => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full sm:w-auto flex-grow px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+                className="w-full sm:w-auto flex-grow px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition text-slate-800"
               />
               <span className="text-gray-500 hidden sm:block">-</span>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full sm:w-auto flex-grow px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+                className="w-full sm:w-auto flex-grow px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition text-slate-800"
               />
               <button
                 onClick={handleFilter}
