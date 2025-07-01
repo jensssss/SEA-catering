@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 export async function POST() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
     // Iterate using `getAll()` is NOT available, so use known prefixes
     const supabaseCookies = [
