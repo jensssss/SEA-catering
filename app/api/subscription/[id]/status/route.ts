@@ -1,22 +1,21 @@
 // PATCH /api/subscription/[id]/status
 import { createClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = Number(params.id);
-  if (isNaN(id)) {
+export async function PATCH(req: NextRequest) {
+  const url = new URL(req.url);
+  const id = url.pathname.split('/')[5];
+
+  if (!id || isNaN(Number(id))) {
     return NextResponse.json({ message: 'Invalid ID' }, { status: 400 });
   }
 
-  const { newStatus } = await request.json();
+  const { newStatus } = await req.json();
 
   const allowedStatuses = ['active', 'paused', 'cancelled'];
   if (!allowedStatuses.includes(newStatus)) {
